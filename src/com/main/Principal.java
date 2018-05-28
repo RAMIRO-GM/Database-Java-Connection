@@ -36,7 +36,8 @@ public class Principal {
         
         Cancion cancion=new Cancion();
         CancionDaoImpl cancionDao= new CancionDaoImpl();
-          boolean resultado=true;
+        
+          boolean flag=true;
        switch(opcion){
            case 1:
                System.out.println("Ingresa el nombre de la cancion: ");
@@ -45,28 +46,28 @@ public class Principal {
                String nombre_artista=scan.nextLine();
                cancion.setNombre(nombre_cancion);
                cancion.setArtista(nombre_artista);
-               resultado=cancionDao.Create(cancion);
+                boolean resultado=cancionDao.Create(cancion);
                
                if (resultado){
-                System.out.println("Ingresa el nombre del artista: ");
+                System.out.println("Se ingresó correctamente: ");
                }
                else{
-                System.out.println("Ingresa el nombre del artista: ");
+                System.out.println("No se arma");
                    }
                
                break;
            case 2: 
                List<Cancion> cancionesLista=cancionDao.read();
                for(Cancion i:cancionesLista ){
-                System.out.println("Id: "+i.getNum_cancion()+"Nombre: "+i.getArtista()+"Artista: "+i.getArtista());
+                System.out.println("Id: "+i.getNum_cancion()+"Nombre: "+i.getNombre()+"Artista: "+i.getArtista());
                }
                break;
            case 3: break;
            case 4: break;
            case 5: 
-               resultado=false;
+               flag=false;
                break;
     } 
-      return resultado;
+      return flag;
     }
 }

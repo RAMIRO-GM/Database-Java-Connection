@@ -14,19 +14,26 @@ import utileria.Cancion;
 
 
 public class CancionDaoImpl implements IcancionesDao{
-    
-Connection conexion;
-    private void conexion(){
-        try{
-        String cadenaConexion="jdbc:mysql://localhost:3306/spotifydb?useSSL=false";
+    String cadenaConexion="jdbc:mysql://localhost:3306/spotifydb?useSSL=false";
         String usuario="root";
         String passDB="123456";
-        Connection conexion=DriverManager.getConnection(cadenaConexion,usuario,passDB);
-        
-        }catch(SQLException ex){
-        ex.printStackTrace();
+      Connection conexion;
+      
+      public CancionDaoImpl(){}
+      
+    private void conexion(){
+            try{
+
+            conexion=DriverManager.getConnection(cadenaConexion,usuario,passDB);
+
+            }catch(SQLException ex){
+            ex.printStackTrace();
+            }
         }
-        }
+    
+    private void cerrar() throws SQLException{
+     conexion.close();
+ }
     
     @Override
     public boolean Create(Cancion entidad) throws SQLException {
@@ -37,13 +44,11 @@ Connection conexion;
         //recupero el nombre
         stm.setString(1,entidad.getNombre());
         stm.setString(2,entidad.getArtista());
+        boolean ejecutado = stm.executeUpdate() > 0;
         stm.close();
-        boolean ejecutado=stm.executeUpdate()>0;
-        
-        conexion.close();
+        cerrar();
         return ejecutado;
-        
-    }
+        }
 
     @Override
     public List<Cancion> read() throws SQLException{
@@ -68,18 +73,30 @@ Connection conexion;
             }
         resultado.close();
         sentencia.close();
-        conexion.close();
+        cerrar();
         return cancionesLista;
     }
 
     @Override
     public boolean update(Cancion entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+  /*      conexion();//conecta
+        //update
+        String leerQuery="UPDATE canciones SET columNAme='new update' WHERE cancion_id=1";
+         Statement st=conexion.createStatement(); //jala loque tiene
+         ResultSet resultado=sentencia.executeQuery(leerQuery);*/
     }
 
     @Override
     public boolean delete(int num_cancion) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    /*  conexion();//conecta
+        //update
+        String leerQuery="DELETE FROM canciones WHERE columNAme='Thing to delete'";
+         Statement st2=conexion.createStatement(); //jala loque tiene
+         ResultSet resultado=sentencia.executeQuery(leerQuery);*/
     }
     
 }
